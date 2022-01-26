@@ -11,7 +11,6 @@
 		9F7F8449279FDBFC0090420E /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F8448279FDBFC0090420E /* TaskListViewController.swift */; };
 		9F7F8451279FDC000090420E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F7F8450279FDC000090420E /* Assets.xcassets */; };
 		9F7F8454279FDC000090420E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7F8452279FDC000090420E /* LaunchScreen.storyboard */; };
-		9F7F845C279FEA990090420E /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F845B279FEA990090420E /* NewTaskViewController.swift */; };
 		9FE6ABF127A02BAC00EB2BF6 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FE6ABEF27A02BAC00EB2BF6 /* CoreDataDemo.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -22,7 +21,6 @@
 		9F7F8450279FDC000090420E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F7F8453279FDC000090420E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F7F8455279FDC000090420E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F7F845B279FEA990090420E /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
 		9FE6ABF027A02BAC00EB2BF6 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +56,6 @@
 			children = (
 				9F7F8444279FDBFC0090420E /* AppDelegate.swift */,
 				9F7F8448279FDBFC0090420E /* TaskListViewController.swift */,
-				9F7F845B279FEA990090420E /* NewTaskViewController.swift */,
 				9F7F8450279FDC000090420E /* Assets.xcassets */,
 				9F7F8452279FDC000090420E /* LaunchScreen.storyboard */,
 				9F7F8455279FDC000090420E /* Info.plist */,
@@ -139,7 +136,6 @@
 			files = (
 				9F7F8449279FDBFC0090420E /* TaskListViewController.swift in Sources */,
 				9FE6ABF127A02BAC00EB2BF6 /* CoreDataDemo.xcdatamodeld in Sources */,
-				9F7F845C279FEA990090420E /* NewTaskViewController.swift in Sources */,
 				9F7F8445279FDBFC0090420E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

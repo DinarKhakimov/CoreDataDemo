@@ -56,10 +56,43 @@ class TaskListViewController: UITableViewController {
         
     }
     
+    private func showAlertTask(with title: String, and message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let task = alertController.textFields?.first?.text else { return }
+            self.save(task)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { _ in
+            self.dismiss(animated: true)
+        })
+        
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        alertController.addTextField { textField in
+            textField.placeholder = "New Task"
+        }
+        present(alertController, animated: true)
+
+    }
+    
+    private func save(_ taskName: String) {
+        let task = Task(context: context)
+        task.name = taskName
+        taskList.append(task)
+        let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
+        tableView.insertRows(at: [cellIndex], with: .automatic)
+        
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     @objc private func addNewTask() {
-        let newTaskVC = TaskViewController()
-        newTaskVC.modalPresentationStyle = .fullScreen
-        present(newTaskVC, animated: true)
+        showAlertTask(with: "New task", and: "What do you want to do?")
     }
     
     private func fetchData() {
@@ -74,6 +107,11 @@ class TaskListViewController: UITableViewController {
 }
 
 extension TaskListViewController {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+        
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         taskList.count
     }
@@ -87,4 +125,25 @@ extension TaskListViewController {
         cell.contentConfiguration = content
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let taskDelete = taskList[indexPath.row]
+        taskList.remove(at: indexPath.row)
+        context.delete(taskDelete)
+        
+        do {
+            try context.save()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        } catch {
+            print(error )
+        }
+    }
 }
+
+// Для сложных взаимосвязей в модели
+//        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
+//        guard let task = NSManagedObject(entity: entityDescription, insertInto: context) as? Task else { return }
