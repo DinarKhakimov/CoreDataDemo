@@ -5,25 +5,23 @@
 //  Created by Johnny Boshechka on 1/25/22.
 //
 import UIKit
-import CoreData
 
 class TaskListViewController: UITableViewController {
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let storageManager = StorageManager.shared
     
     private let cellID = "task"
-    private var taskList: [Task] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         setupNavigationBar()
-        fetchData()
+        storageManager.fetchData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchData()
+        storageManager.fetchData()
         tableView.reloadData()
     }
  
@@ -57,11 +55,12 @@ class TaskListViewController: UITableViewController {
     }
     
     private func showAlertTask(with title: String, and message: String) {
+       
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             guard let task = alertController.textFields?.first?.text else { return }
-            self.save(task)
+            self.storageManager.save(task, tableView: self.tableView)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { _ in
@@ -77,48 +76,45 @@ class TaskListViewController: UITableViewController {
 
     }
     
-    private func save(_ taskName: String) {
-        let task = Task(context: context)
-        task.name = taskName
-        taskList.append(task)
-        let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
-        tableView.insertRows(at: [cellIndex], with: .automatic)
-        
-        do {
-            try context.save()
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+        private func showEditAlert(with title: String, and message: String, indexPath: IndexPath) {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+                    guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
+                    self.storageManager.editTask(task, indexPath)
+                    self.tableView.reloadData()
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+                alert.addAction(saveAction)
+                alert.addAction(cancelAction)
+                alert.addTextField { textField in
+                    let task = self.storageManager.taskList[indexPath.row]
+                    textField.text = task.name
+                }
+                present(alert, animated: true)
+            }
     
     @objc private func addNewTask() {
         showAlertTask(with: "New task", and: "What do you want to do?")
     }
     
-    private func fetchData() {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            taskList = try context.fetch(fetchRequest)
-        } catch {
-           print("Faild to fetch data", error)
-        }
-    }
+    private func edit(_ task: Task,_ newName: String, _ indexPath: [IndexPath]) {
+           task.name = newName
+           storageManager.saveContext()
+           tableView.reloadRows(at: indexPath, with: .automatic)
+
+       }
+
 }
 
 extension TaskListViewController {
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-        
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        taskList.count
+        storageManager.taskList.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-        let task = taskList[indexPath.row]
+        let task = storageManager.taskList[indexPath.row]
         
         var content = cell.defaultContentConfiguration()
         content.text = task.name
@@ -130,20 +126,31 @@ extension TaskListViewController {
         true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let taskDelete = taskList[indexPath.row]
-        taskList.remove(at: indexPath.row)
-        context.delete(taskDelete)
-        
-        do {
-            try context.save()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        } catch {
-            print(error )
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, complete in
+            self.showEditAlert(with: "Edit", and: "Editing task", indexPath: indexPath)
+            
         }
+        
+        let deleteAction = UIContextualAction(style: .normal, title: "Delete") { _, _, complete in
+            let task = self.storageManager.taskList[indexPath.row]
+            self.storageManager.taskList.remove(at: indexPath.row)
+            self.storageManager.persistentContainer.viewContext.delete(task)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+       
+        editAction.backgroundColor = .systemGreen
+        deleteAction.backgroundColor = .red
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
-}
+        
+
 
 // Для сложных взаимосвязей в модели
 //        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
 //        guard let task = NSManagedObject(entity: entityDescription, insertInto: context) as? Task else { return }
+//}
+}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F7B2F7527A1C89400CEF170 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B2F7427A1C89400CEF170 /* StorageManager.swift */; };
 		9F7F8445279FDBFC0090420E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F8444279FDBFC0090420E /* AppDelegate.swift */; };
 		9F7F8449279FDBFC0090420E /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F8448279FDBFC0090420E /* TaskListViewController.swift */; };
 		9F7F8451279FDC000090420E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F7F8450279FDC000090420E /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F7B2F7427A1C89400CEF170 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		9F7F8441279FDBFC0090420E /* CoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7F8444279FDBFC0090420E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F7F8448279FDBFC0090420E /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				9F7F8444279FDBFC0090420E /* AppDelegate.swift */,
 				9F7F8448279FDBFC0090420E /* TaskListViewController.swift */,
+				9F7B2F7427A1C89400CEF170 /* StorageManager.swift */,
 				9F7F8450279FDC000090420E /* Assets.xcassets */,
 				9F7F8452279FDC000090420E /* LaunchScreen.storyboard */,
 				9F7F8455279FDC000090420E /* Info.plist */,
@@ -137,6 +140,7 @@
 				9F7F8449279FDBFC0090420E /* TaskListViewController.swift in Sources */,
 				9FE6ABF127A02BAC00EB2BF6 /* CoreDataDemo.xcdatamodeld in Sources */,
 				9F7F8445279FDBFC0090420E /* AppDelegate.swift in Sources */,
+				9F7B2F7527A1C89400CEF170 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
