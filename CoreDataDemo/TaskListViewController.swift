@@ -96,14 +96,6 @@ class TaskListViewController: UITableViewController {
     @objc private func addNewTask() {
         showAlertTask(with: "New task", and: "What do you want to do?")
     }
-    
-    private func edit(_ task: Task,_ newName: String, _ indexPath: [IndexPath]) {
-           task.name = newName
-           storageManager.saveContext()
-           tableView.reloadRows(at: indexPath, with: .automatic)
-
-       }
-
 }
 
 extension TaskListViewController {
@@ -126,17 +118,14 @@ extension TaskListViewController {
         true
     }
     
-    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, complete in
-            self.showEditAlert(with: "Edit", and: "Editing task", indexPath: indexPath)
+            self.showEditAlert(with: "Edit", and: "Task editing", indexPath: indexPath)
             
         }
         
         let deleteAction = UIContextualAction(style: .normal, title: "Delete") { _, _, complete in
-            let task = self.storageManager.taskList[indexPath.row]
-            self.storageManager.taskList.remove(at: indexPath.row)
-            self.storageManager.persistentContainer.viewContext.delete(task)
+            self.storageManager.deleteTask(indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
        

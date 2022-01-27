@@ -68,4 +68,10 @@ class StorageManager {
         saveContext()
     }
   
+    func deleteTask(_ indexPath: Int) {
+        let task = taskList[indexPath]
+        persistentContainer.viewContext.delete(task)
+        taskList.remove(at: indexPath)
+        
+    }
 }
